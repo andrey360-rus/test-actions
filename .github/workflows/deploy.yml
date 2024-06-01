@@ -1,6 +1,3 @@
-Понял, давайте попробуем другую конфигурацию для установки Yarn. Вот обновленный конфигурационный файл GitHub Actions с использованием другого способа установки Yarn:
-
-  ```yaml
 # Simple workflow for deploying static content to GitHub Pages
 name: Deploy static content to Pages
 
@@ -51,6 +48,3 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
-  ```
-  
-  Этот обновленный файл GitHub Actions использует установку Yarn через curl и bash, а затем выполняет установку зависимостей и сборку проекта с помощью Yarn. Пожалуйста, попробуйте эту конфигурацию и проверьте, будет ли она работать для вашего проекта.
