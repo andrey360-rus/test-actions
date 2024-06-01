@@ -1,3 +1,6 @@
+Понял, давайте попробуем другую конфигурацию для установки Yarn. Вот обновленный конфигурационный файл GitHub Actions с использованием другого способа установки Yarn:
+
+  ```yaml
 # Simple workflow for deploying static content to GitHub Pages
 name: Deploy static content to Pages
 
@@ -27,18 +30,14 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
-#    defaults:
-#      run:
-#        working-directory: ./react-app-aemanskova/
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Set up Node
-        uses: mskelton/setup-yarn@v1
-#        uses: actions/setup-node@v4
-#        with:
-#          node-version: 20
-#          cache: 'yarn'
+      - name: Set up Node and Yarn
+        run: |
+          curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version 1.22.22
+          export PATH=$HOME/.yarn/bin:$PATH
+          yarn --version
       - name: Install dependencies
         run: yarn install
       - name: Build
@@ -48,8 +47,10 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # Upload dist folder
           path: './dist'
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+  ```
+  
+  Этот обновленный файл GitHub Actions использует установку Yarn через curl и bash, а затем выполняет установку зависимостей и сборку проекта с помощью Yarn. Пожалуйста, попробуйте эту конфигурацию и проверьте, будет ли она работать для вашего проекта.
