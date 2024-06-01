@@ -1,3 +1,0 @@
-interface ContentContainerProps {
-  background: string;
-}
