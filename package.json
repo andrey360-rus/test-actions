@@ -20,15 +20,14 @@
       "@tanstack/react-query": "^5.29.2",
       "antd": "^5.11.3",
       "axios": "^1.6.2",
-      "lint-staged": "^15.2.2",
       "firebase": "8.10.0",
+      "lint-staged": "^15.2.2",
       "react": "^18.2.0",
       "react-dom": "^18.2.0",
       "react-hook-form": "^7.49.2",
       "react-intersection-observer": "^9.8.1",
       "react-router-dom": "6",
-      "styled-components": "^6.1.1",
-      "web-assignment": "^1.0.3"
+      "styled-components": "^6.1.1"
    },
    "devDependencies": {
       "@testing-library/jest-dom": "^5.17.0",
