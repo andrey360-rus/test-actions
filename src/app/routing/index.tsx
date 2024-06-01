@@ -1,35 +1,37 @@
-import { DRIVERS_PATH, VEHICLES_PATH, ABOUT_PATH, LANDING_PATH, REGISTER_PATH, GENA_PATH } from "./config";
-import { useRoutes, Navigate, RouteObject } from "react-router-dom";
-import Vehicles from "../../pages/Vehicles";
-import About from "../../pages/About";
-import Landing from "../../pages/Landing";
-import Drivers from "../../pages/Drivers";
-import Register from "../../pages/Register";
-import Gena from "../../pages/Gena";
+import React, { FC } from "react";
+import { Navigate, RouteObject, useRoutes } from "react-router-dom";
 
-const MainRouter = ({ isLoggedIn = false }) => {
-  const publicPaths: RouteObject[] = [
-    { path: ABOUT_PATH, element: <About /> },
-    { path: GENA_PATH, element: <Gena /> },
-    { path: LANDING_PATH, element: <Landing /> },
-    { path: "*", element: <Navigate to={"/"} replace /> },
-  ];
+import { FILMS, HOME, PROFILE, NEWS, SIGNIN, SIGNUP } from "./config";
+import { FilmsPage, HomePage, NewsPage, ProfilePage, SignInPage, SignUpPage } from "../../pages";
 
-  const privatePaths: RouteObject[] = [
-    { path: DRIVERS_PATH, element: <Drivers /> },
-    { path: VEHICLES_PATH, element: <Vehicles /> },
-  ];
+import RequiredAuth from "../../components/RequiredAuth";
 
-  const guestPaths: RouteObject[] = [{ path: REGISTER_PATH, element: <Register /> }];
+const MainRouter: FC = () => {
+   const resultPaths: RouteObject[] = [
+      { path: HOME, element: <HomePage /> },
+      { path: FILMS, element: <FilmsPage /> },
+      { path: SIGNIN, element: <SignInPage /> },
+      { path: SIGNUP, element: <SignUpPage /> },
+      {
+         path: PROFILE,
+         element: (
+            <RequiredAuth>
+               <ProfilePage />
+            </RequiredAuth>
+         ),
+      },
+      {
+         path: NEWS,
+         element: (
+            <RequiredAuth>
+               <NewsPage />
+            </RequiredAuth>
+         ),
+      },
+      { path: "*", element: <Navigate to={"/"} replace /> },
+   ];
 
-  const resultPaths: RouteObject[] = publicPaths;
-
-  if (isLoggedIn) {
-    resultPaths.push(...privatePaths);
-  } else {
-    resultPaths.push(...guestPaths);
-  }
-  return useRoutes(resultPaths);
+   return useRoutes(resultPaths);
 };
 
 export default MainRouter;

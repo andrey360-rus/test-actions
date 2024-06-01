@@ -1,6 +1,6 @@
-export const DRIVERS_PATH = "drivers";
-export const VEHICLES_PATH = "vehicles";
-export const LANDING_PATH = "";
-export const ABOUT_PATH = "about";
-export const REGISTER_PATH = "register";
-export const GENA_PATH = "gena";
+export const HOME = "/";
+export const FILMS = "/films";
+export const PROFILE = "/profile";
+export const NEWS = "/news";
+export const SIGNIN = "/signin";
+export const SIGNUP = "/signup";

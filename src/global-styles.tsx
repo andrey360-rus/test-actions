@@ -1,39 +1,41 @@
 import { createGlobalStyle } from "styled-components";
 
-const GlobalStyles = createGlobalStyle`
-    :root {
-        --dark-blue: #385898;
-        --light-blue: #b3f8fa;
-        --yellow: #FFFF00;
-        --purple: #FF00FF;
-    }
-    
-    body {
-        background-color: var(--body-background);
+interface StyledProps {
+   mode: "light" | "dark";
+}
+//
+
+const GlobalStyles = createGlobalStyle<StyledProps>`
+*{
+    box-sizing:border-box;
+}
+
+:root{
+    --main-border:${({ mode }) => (mode === "light" ? "1px solid rgb(0 0 0 / 20%)" : "1px solid white")};
+    --theme-bg:${({ mode }) => (mode === "light" ? "white" : "black")};
+    --theme-text-color:${({ mode }) => (mode === "dark" ? "white" : "black")};
+    --table-content-bg:${({ mode }) => (mode === "dark" ? "#636363" : "white")};
+    --table-header-bg:${({ mode }) => (mode === "dark" ? "#8b8b8b" : "#fafafa")};
+    --table-outline:${({ mode }) => (mode === "dark" ? "2px solid white" : "none")};   
+    --table-cell-hover-color:${({ mode }) => (mode === "dark" ? "#8b8a8a" : "#fafafa")};
+    --menu-bg:${({ mode }) => (mode === "dark" ? "#8b8a8a" : "white")};
+}
+    body{
+        background-color: var(--theme-bg)
     }
 
-    nav {
-        background-color: var(--nav-background);
-    }
-
-    button {
-        background-color: var(--button-color);
-        color: var(--button-text-color);
-    }
-
-    html[data-theme=light] {
-        --body-background: var(--light-blue);
-        --nav-background: var(--dark-blue);
-        --button-color: #e7f3ff;
-        --button-text-color: #385898;
-    }
-    
-    html[data-theme=dark]{
-        --body-background: cyan;
-        --nav-background: black;
-        --button-color: #0000FF;
-        --button-text-color: #DFDFFF;
-    }
+    .container {
+  max-width: calc(2560px + 1.875em);
+  margin: 0 auto;
+  width: 100%;
+  padding-left: 0.9375em;
+  padding-right: 0.9375em;
+}
+.ant-menu-submenu-popup.ant-menu-submenu{
+background:var(--menu-bg);
+}
+.ant-menu-light.ant-menu-submenu>.ant-menu{
+    background:var(--menu-bg);
+}
 `;
-
 export default GlobalStyles;

@@ -1,66 +1,54 @@
-import axios from "axios";
-import { FC, useEffect, useState } from "react";
+import React, { FC, useEffect } from "react";
+import CardFilm from "../CardFilm";
+import { Row, Col, Spin, Empty } from "antd";
 import { useInView } from "react-intersection-observer";
-import styled from "styled-components";
-import CardUniversity, { IUniversity } from "../CardUniversity";
+import { BlockObserver } from "./styles";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import { filmsApi } from "@/api/films";
 
-const LIMIT_UNIVERSITIES = 10;
+const LIMIT = 12;
 
-const BlockObserver = styled.div`
-  height: 40px;
-  background-color: black;
-`;
+const DymanicPagination: FC = () => {
+   const { ref, inView } = useInView({
+      threshold: 0.5,
+   });
 
-const ListStyled = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  max-height: 400px;
-  align-items: center;
-  overflow-y: scroll;
-`;
+   const { data, isFetching, fetchNextPage } = useInfiniteQuery({
+      queryKey: ["films"],
+      queryFn: async ({ pageParam }) => {
+         const resp = await filmsApi.getFilms(pageParam, LIMIT);
+         return { films: resp.docs, page: resp.page };
+      },
+      getNextPageParam: (lastPage) => lastPage && lastPage.page + 1,
+      initialPageParam: 1,
+   });
 
-const DynamicPagination: FC = () => {
-  const [universities, setUniversities] = useState<IUniversity[]>([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [loading, setLoading] = useState(false);
-  useEffect(() => {
-    fetchUniversities();
-  }, [currentPage]);
-  const { ref, inView } = useInView({
-    threshold: 1.0,
-  });
-  useEffect(() => {
-    if (inView) {
-      setCurrentPage((prev) => prev + 1);
-    }
-  }, [inView]);
+   useEffect(() => {
+      if (inView) {
+         fetchNextPage();
+      }
+   }, [inView]);
 
-  const fetchUniversities = async () => {
-    try {
-      setLoading(true);
-      const offset = (currentPage - 1) * LIMIT_UNIVERSITIES;
-      const { data } = await axios.get(
-        `http://universities.hipolabs.com/search?offset=${offset}&limit=${LIMIT_UNIVERSITIES}`,
-      );
-      setUniversities((prev) => [...prev, ...data]);
-    } catch (error) {
-      console.log("Error fetching univer...", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  return (
-    <ListStyled>
-      <h1>List Universities</h1>
-      {universities.map((university) => (
-        <CardUniversity data={university} key={university.name}></CardUniversity>
-      ))}
-      {loading && <div>Загрузка...</div>}
-      {!loading && <BlockObserver ref={ref}></BlockObserver>}
-    </ListStyled>
-  );
+   return (
+      <div className="container">
+         <h1>Films</h1>
+         <Spin spinning={isFetching} fullscreen />
+         {data ? (
+            <Row align="top" gutter={[{ xs: 8, sm: 16, md: 24, lg: 32 }, 24]}>
+               {data.pages.map((el) =>
+                  el?.films.map((film, i) => (
+                     <Col key={i} xs={24} sm={12} md={4}>
+                        <CardFilm testid={"movies"} film={film} />
+                     </Col>
+                  )),
+               )}
+            </Row>
+         ) : (
+            <Empty />
+         )}
+         {!isFetching && <BlockObserver data-testid="observer" ref={ref}></BlockObserver>}
+      </div>
+   );
 };
 
-export default DynamicPagination;
+export default DymanicPagination;

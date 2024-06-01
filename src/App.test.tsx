@@ -1,9 +1,24 @@
-import React from "react";
-import { render, screen } from "@testing-library/react";
+import { describe } from "vitest";
+import { render, screen, userEvent } from "@/tests/setup";
+import { BrowserRouter } from "react-router-dom";
+import ContextProvider from "./providers/contextProvider";
 import App from "./App";
 
-test("renders learn react link", () => {
-  render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+describe("App", () => {
+   test("работа роутера", async () => {
+      render(
+         <BrowserRouter>
+            <ContextProvider>
+               <App />
+            </ContextProvider>
+         </BrowserRouter>,
+      );
+      const profile = await screen.findByTestId("profile");
+      const authBtn = await screen.findByTestId("auth-btn");
+      expect(authBtn).toBeInTheDocument();
+      userEvent.click(profile);
+      expect(await screen.findByText("Authorized only!")).toBeInTheDocument();
+      userEvent.click(authBtn);
+      expect(await screen.findByText("Username profile")).toBeInTheDocument();
+   });
 });

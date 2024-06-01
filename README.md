@@ -1,3 +1,3 @@
-Луговских Данил Викторович, группа 221-323.
+# Архипов Вячеслав группа 221-321
 
-[Видео-демонстрация](https://clck.ru/37aLVF)
+## Ссылка на итоговое видео - [ссылка](https://drive.google.com/file/d/1x9U16aOgUJH1-L-Ngogr9mwCM9EYqSTL/view?usp=sharing)
