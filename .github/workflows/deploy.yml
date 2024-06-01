@@ -39,7 +39,7 @@ jobs:
           node-version: 20
           cache: 'npm'
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: yarn install
       - name: Build
         run: yarn build
       - name: Setup Pages
